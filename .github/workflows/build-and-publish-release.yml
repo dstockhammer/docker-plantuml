@@ -25,7 +25,7 @@ jobs:
     - name: Upload test result
       uses: actions/upload-artifact@v2
       with:
-        name: sequence-diff.png
+        name: sequence-diff
         path: test/sequence-diff.png
     - name: Build version info
       run: |
@@ -33,12 +33,13 @@ jobs:
     - name: Upload verion info
       uses: actions/upload-artifact@v2
       with:
-        name: version.png
+        name: version
         path: test/version.png
     - name: Tag Docker image
       run: |
-        docker tag plantuml:latest plantuml:${GITHUB_REF##*/}
+        docker tag plantuml:latest dstockhammer/plantuml:latest
+        docker tag plantuml:latest dstockhammer/plantuml:${GITHUB_REF##*/}
     - name: Push Docker images
       run: |
-        docker push plantuml:${GITHUB_REF##*/}
-        docker push plantuml:latest
+        docker push dstockhammer/plantuml:${GITHUB_REF##*/}
+        docker push dstockhammer/plantuml:latest
