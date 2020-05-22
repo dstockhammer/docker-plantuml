@@ -22,3 +22,6 @@ the script and puts it into `/usr/local/bin` so that you can simply execute
     sudo mv plantuml.sh /usr/local/bin/plantuml
     sudo chmod +x /usr/local/bin/plantuml
     plantuml
+
+Note: PlantUML has a history of frequent backward-incompatible changes, so to be
+safe make sure to replace `latest` in the script above with a version of choice.

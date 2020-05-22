@@ -19,5 +19,5 @@ COPY --from=plantuml /plantuml.jar /app/plantuml.jar
 
 WORKDIR /data
 
-ENTRYPOINT [ "java", "-jar", "/app/plantuml.jar" ]
+ENTRYPOINT [ "java", "-Djava.awt.headless=true", "-jar", "/app/plantuml.jar" ]
 CMD [ "-help" ]
