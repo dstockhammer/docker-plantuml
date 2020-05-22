@@ -3,6 +3,9 @@
 Docker image containing the [PlantUML](https://github.com/plantuml/plantuml)
 CLI.
 
+![Docker Image Version (latest semver)](https://img.shields.io/docker/v/dstockhammer/plantuml)
+![GitHub last commit](https://img.shields.io/github/last-commit/dstockhammer/docker-plantuml)
+
 ## Usage
 
 You can either mount the diagrams as volume:
@@ -11,7 +14,7 @@ You can either mount the diagrams as volume:
 
 Or pass a single puml file using stdin:
 
-    cat my-diagram.puml | docker run --rm dstockhammer/plantuml -pipe > my-diagram.png
+    cat my-diagram.puml | docker run --rm -i dstockhammer/plantuml -pipe > my-diagram.png
 
 Alternatively, you can copy the [plantuml.sh](plantuml.sh) script to a location
 on your system and execute that. For convenience, here's a script that downloads
