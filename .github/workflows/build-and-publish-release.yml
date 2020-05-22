@@ -30,7 +30,7 @@ jobs:
     - name: Build version info
       run: |
         docker run --rm -v $(pwd)/test:/data plantuml version.puml
-    - name: Upload verion info
+    - name: Upload version info
       uses: actions/upload-artifact@v2
       with:
         name: version
@@ -43,3 +43,12 @@ jobs:
       run: |
         docker push dstockhammer/plantuml:${GITHUB_REF##*/}
         docker push dstockhammer/plantuml:latest
+    - name: Upload version info as release asset
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ github.event.release.upload_url }}
+        asset_path: test/version.png
+        asset_name: version.png
+        asset_content_type: image/png
