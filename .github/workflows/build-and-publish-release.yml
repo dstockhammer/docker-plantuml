@@ -20,7 +20,21 @@ jobs:
           --build-arg "version=${GITHUB_REF##*/}"
     - name: Run test
       run: |
-        compare test/sequence.png test/expected-sequence.png -compose src test/sequence-diff.png 
+        docker run --rm -v $(pwd)/test:/data plantuml sequence.puml
+        compare test/sequence.png test/expected-sequence.png -compose src test/sequence-diff.png
+    - name: Upload test result
+      uses: actions/upload-artifact@v2
+      with:
+        name: sequence-diff.png
+        path: test/sequence-diff.png
+    - name: Build version info
+      run: |
+        docker run --rm -v $(pwd)/test:/data plantuml version.puml
+    - name: Upload verion info
+      uses: actions/upload-artifact@v2
+      with:
+        name: version.png
+        path: test/version.png
     - name: Tag Docker image
       run: |
         docker tag plantuml:latest plantuml:${GITHUB_REF##*/}
@@ -28,4 +42,3 @@ jobs:
       run: |
         docker push plantuml:${GITHUB_REF##*/}
         docker push plantuml:latest
-        
