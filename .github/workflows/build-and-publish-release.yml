@@ -1,0 +1,31 @@
+name: Build and publish Docker image
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Log in to Docker registry
+      run: |
+        echo ${{ secrets.DOCKER_PASSWORD }} \
+          | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+    - name: Build Docker image
+      run: |
+        docker build -t plantuml:latest . \
+          --build-arg "version=${GITHUB_REF##*/}"
+    - name: Run test
+      run: |
+        compare test/sequence.png test/expected-sequence.png -compose src test/sequence-diff.png 
+    - name: Tag Docker image
+      run: |
+        docker tag plantuml:latest plantuml:${GITHUB_REF##*/}
+    - name: Push Docker images
+      run: |
+        docker push plantuml:${GITHUB_REF##*/}
+        docker push plantuml:latest
+        
