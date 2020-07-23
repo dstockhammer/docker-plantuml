@@ -22,19 +22,15 @@ jobs:
       run: |
         docker run --rm -v $(pwd)/test:/data plantuml sequence.puml
         compare test/sequence.png test/expected-sequence.png -compose src test/sequence-diff.png
-    - name: Upload test result
-      uses: actions/upload-artifact@v2
-      with:
-        name: sequence-diff
-        path: test/sequence-diff.png
     - name: Build version info
       run: |
         docker run --rm -v $(pwd)/test:/data plantuml version.puml
-    - name: Upload version info
+    - name: Upload generated files
       uses: actions/upload-artifact@v2
+      if: ${{ always() }}
       with:
-        name: version
-        path: test/version.png
+        name: generated-files
+        path: test/*.png
     - name: Tag Docker image
       run: |
         docker tag plantuml:latest dstockhammer/plantuml:latest
