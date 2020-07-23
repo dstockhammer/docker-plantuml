@@ -3,8 +3,8 @@
 Docker image containing the [PlantUML](https://github.com/plantuml/plantuml)
 CLI.
 
-![Docker Image Version (latest semver)](https://img.shields.io/docker/v/dstockhammer/plantuml)
-![GitHub last commit](https://img.shields.io/github/last-commit/dstockhammer/docker-plantuml)
+[![Docker Image Version (latest semver)](https://img.shields.io/docker/v/dstockhammer/plantuml?sort=semver)](https://hub.docker.com/r/dstockhammer/plantuml)
+[![GitHub last commit](https://img.shields.io/github/last-commit/dstockhammer/docker-plantuml)](https://github.com/dstockhammer/docker-plantuml/commits/master)
 
 ## Usage
 
