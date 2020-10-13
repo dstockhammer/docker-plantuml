@@ -1,7 +1,8 @@
 # docker-plantuml
 
 Docker image containing the [PlantUML](https://github.com/plantuml/plantuml)
-CLI.
+CLI. Looking for a base image with bundled Python and Poetry? Check out
+[dstockhammer/docker-plantuml-poetry](https://github.com/dstockhammer/docker-plantuml-poetry)!
 
 [![Docker Image Version (latest semver)](https://img.shields.io/docker/v/dstockhammer/plantuml?sort=semver)](https://hub.docker.com/r/dstockhammer/plantuml)
 [![GitHub last commit](https://img.shields.io/github/last-commit/dstockhammer/docker-plantuml)](https://github.com/dstockhammer/docker-plantuml/commits/master)
