@@ -43,6 +43,7 @@ jobs:
 
       - name: Build Docker image
         run: |
+          chmod +x plantuml.sh
           docker build -t plantuml:latest .
 
       - name: Run test
