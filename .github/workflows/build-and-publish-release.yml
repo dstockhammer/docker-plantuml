@@ -26,7 +26,7 @@ jobs:
           sudo apt update && sudo apt-get install xmlstarlet --yes
 
       - name: Get PlantUML version
-        id: plantuml_version
+        id: get_plantuml_version
         run: |
           xmlstarlet sel -N x="http://maven.apache.org/POM/4.0.0" -t \
             -m '//x:dependency[x:artifactId = "plantuml"]/x:version/text()' \
@@ -48,7 +48,7 @@ jobs:
 
       - name: Build release body
         run: |
-          echo "https://github.com/plantuml/plantuml/releases/tag/v${{ steps.plantuml_version.outputs.version }}" > release_body.md
+          echo "https://github.com/plantuml/plantuml/releases/tag/v${{ steps.get_plantuml_version.outputs.version }}" > release_body.md
           echo '' >> release_body.md
           echo '```' >> release_body.md
           docker run --rm plantuml -version >> release_body.md
@@ -56,11 +56,12 @@ jobs:
 
       - name: Create release
         uses: actions/create-release@v1
+        id: create_release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ steps.plantuml_version.outputs.version }}
-          release_name: ${{ steps.plantuml_version.outputs.version }}
+          tag_name: ${{ steps.get_plantuml_version.outputs.version }}
+          release_name: ${{ steps.get_plantuml_version.outputs.version }}
           body_path: release_body.md
           draft: false
           prerelease: false
@@ -71,22 +72,22 @@ jobs:
           name: generated-files
           path: test/*.png
 
-      - name: Tag Docker image
-        run: |
-          docker tag plantuml:latest dstockhammer/plantuml:latest
-          docker tag plantuml:latest dstockhammer/plantuml:${{ steps.plantuml_version.outputs.version }}
-
-      - name: Push Docker images
-        run: |
-          docker push dstockhammer/plantuml:latest
-          docker push dstockhammer/plantuml:${{ steps.plantuml_version.outputs.version }}
-
       - name: Upload version info as release asset
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ github.event.release.upload_url }}
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: test/version.png
           asset_name: version.png
           asset_content_type: image/png
+
+      - name: Tag Docker image
+        run: |
+          docker tag plantuml:latest dstockhammer/plantuml:latest
+          docker tag plantuml:latest dstockhammer/plantuml:${{ steps.get_plantuml_version.outputs.version }}
+
+      - name: Push Docker images
+        run: |
+          docker push dstockhammer/plantuml:latest
+          docker push dstockhammer/plantuml:${{ steps.get_plantuml_version.outputs.version }}
