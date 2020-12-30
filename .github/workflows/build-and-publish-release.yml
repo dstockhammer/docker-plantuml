@@ -16,12 +16,18 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      # - name: Get PlantUML version
+      #   uses: mavrosxristoforos/get-xml-info@1.0
+      #   id: plantuml_version
+      #   with:
+      #     xml-file: 'pom.xml'
+      #     xpath: '//dependency[artifactId = "plantuml"]/version/text()'
       - name: Get PlantUML version
-        uses: mavrosxristoforos/get-xml-info@1.0
+        uses: QwerMike/xpath-action@v1
         id: plantuml_version
         with:
-          xml-file: 'pom.xml'
-          xpath: '//dependency[artifactId = "plantuml"]/version/text()'
+          filename: 'pom.xml'
+          expression: '//dependency[artifactId = "plantuml"]/version/text()'
 
       - name: Log in to Docker registry
         run: |
@@ -43,7 +49,7 @@ jobs:
 
       - name: Build release body
         run: |
-          echo "https://github.com/plantuml/plantuml/releases/tag/v${{ steps.plantuml_version.outputs.info }}" > release_body.md
+          echo "https://github.com/plantuml/plantuml/releases/tag/v${{ steps.plantuml_version.outputs.result }}" > release_body.md
           echo '' >> release_body.md
           echo '```' >> release_body.md
           docker run --rm plantuml -version >> release_body.md
@@ -54,8 +60,8 @@ jobs:
       #   env:
       #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       #   with:
-      #     tag_name: ${{ steps.plantuml_version.outputs.info }}
-      #     release_name: ${{ steps.plantuml_version.outputs.info }}
+      #     tag_name: ${{ steps.plantuml_version.outputs.result }}
+      #     release_name: ${{ steps.plantuml_version.outputs.result }}
       #     body_path: release_body.md
       #     draft: false
       #     prerelease: false
@@ -69,12 +75,12 @@ jobs:
       # - name: Tag Docker image
       #   run: |
       #     docker tag plantuml:latest dstockhammer/plantuml:latest
-      #     docker tag plantuml:latest dstockhammer/plantuml:${{ steps.plantuml_version.outputs.info }}
+      #     docker tag plantuml:latest dstockhammer/plantuml:${{ steps.plantuml_version.outputs.result }}
 
       # - name: Push Docker images
       #   run: |
       #     docker push dstockhammer/plantuml:latest
-      #     docker push dstockhammer/plantuml:${{ steps.plantuml_version.outputs.info }}
+      #     docker push dstockhammer/plantuml:${{ steps.plantuml_version.outputs.result }}
 
       # - name: Upload version info as release asset
       #   uses: actions/upload-release-asset@v1
