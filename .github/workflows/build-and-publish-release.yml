@@ -27,7 +27,7 @@ jobs:
         id: plantuml_version
         with:
           filename: 'pom.xml'
-          expression: '//dependency[artifactId = "plantuml"]/version/text()'
+          expression: '//dependency/version/text()'
 
       - name: Log in to Docker registry
         run: |
