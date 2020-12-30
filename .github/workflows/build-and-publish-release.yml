@@ -11,7 +11,6 @@ on:
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
-    needs: build
     if: ${{ github.ref == 'refs/heads/master' }}
     steps:
       - name: Checkout code
@@ -42,40 +41,47 @@ jobs:
         run: |
           docker run --rm -v $(pwd)/test:/data plantuml version.puml
 
-      - name: Create release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ steps.plantuml_version.outputs.info }}
-          release_name: ${{ steps.plantuml_version.outputs.info }}
-          body: |
-            https://github.com/plantuml/plantuml/releases/tag/v${{ steps.plantuml_version.outputs.info }}
-          draft: false
-          prerelease: false
-
-      - name: Upload generated files
-        uses: actions/upload-artifact@v2
-        with:
-          name: generated-files
-          path: test/*.png
-
-      - name: Tag Docker image
+      - name: Build release body
         run: |
-          docker tag plantuml:latest dstockhammer/plantuml:latest
-          docker tag plantuml:latest dstockhammer/plantuml:${GITHUB_REF##*/}
+          echo "https://github.com/plantuml/plantuml/releases/tag/v${{ steps.plantuml_version.outputs.info }}" > release_body.md
+          echo '' >> release_body.md
+          echo '```' >> release_body.md
+          docker run --rm plantuml -version >> release_body.md
+          echo '```' >> release_body.md
 
-      - name: Push Docker images
-        run: |
-          docker push dstockhammer/plantuml:${GITHUB_REF##*/}
-          docker push dstockhammer/plantuml:latest
+      # - name: Create release
+      #   uses: actions/create-release@v1
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   with:
+      #     tag_name: ${{ steps.plantuml_version.outputs.info }}
+      #     release_name: ${{ steps.plantuml_version.outputs.info }}
+      #     body_path: release_body.md
+      #     draft: false
+      #     prerelease: false
 
-      - name: Upload version info as release asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ github.event.release.upload_url }}
-          asset_path: test/version.png
-          asset_name: version.png
-          asset_content_type: image/png
+      # - name: Upload generated files
+      #   uses: actions/upload-artifact@v2
+      #   with:
+      #     name: generated-files
+      #     path: test/*.png
+
+      # - name: Tag Docker image
+      #   run: |
+      #     docker tag plantuml:latest dstockhammer/plantuml:latest
+      #     docker tag plantuml:latest dstockhammer/plantuml:${{ steps.plantuml_version.outputs.info }}
+
+      # - name: Push Docker images
+      #   run: |
+      #     docker push dstockhammer/plantuml:latest
+      #     docker push dstockhammer/plantuml:${{ steps.plantuml_version.outputs.info }}
+
+      # - name: Upload version info as release asset
+      #   uses: actions/upload-release-asset@v1
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   with:
+      #     upload_url: ${{ github.event.release.upload_url }}
+      #     asset_path: test/version.png
+      #     asset_name: version.png
+      #     asset_content_type: image/png
