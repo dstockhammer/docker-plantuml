@@ -33,6 +33,14 @@ jobs:
             -v . pom.xml > version.txt
           echo "::set-output name=version::$(cat version.txt)"
 
+      - name: Check if the PlantUML version tag already exists
+        uses: mukunku/tag-exists-action@v1.0.0
+        id: check_version_tag
+        with:
+          tag: ${{ steps.get_plantuml_version.outputs.version }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Build Docker image
         run: |
           docker build -t plantuml:latest .
@@ -56,7 +64,7 @@ jobs:
 
       - name: Create release
         uses: actions/create-release@v1
-        if: ${{ github.ref == 'refs/heads/master' }}
+        if: ${{ github.ref == 'refs/heads/master' && steps.check_version_tag.outputs.exists == 'false' }}
         id: create_release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -76,7 +84,7 @@ jobs:
 
       - name: Upload version info as release asset
         uses: actions/upload-release-asset@v1
-        if: ${{ github.ref == 'refs/heads/master' }}
+        if: ${{ github.ref == 'refs/heads/master' && steps.check_version_tag.outputs.exists == 'false' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -91,7 +99,7 @@ jobs:
           docker tag plantuml:latest dstockhammer/plantuml:${{ steps.get_plantuml_version.outputs.version }}
 
       - name: Push Docker images
-        if: ${{ github.ref == 'refs/heads/master' }}
+        if: ${{ github.ref == 'refs/heads/master' && steps.check_version_tag.outputs.exists == 'false' }}
         run: |
           docker push dstockhammer/plantuml:latest
           docker push dstockhammer/plantuml:${{ steps.get_plantuml_version.outputs.version }}
