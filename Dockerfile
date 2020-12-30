@@ -1,21 +1,18 @@
-FROM alpine AS plantuml
+FROM maven:3.6.3-jdk-11-slim as plantuml
+WORKDIR /app
+COPY pom.xml .
+RUN mvn dependency:copy-dependencies
 
-ARG version
 
-RUN apk add --no-cache \
-  wget
+FROM openjdk:11-slim
 
-RUN wget \
-  "https://sourceforge.net/projects/plantuml/files/$version/plantuml.$version.jar/download" \
-  -O /plantuml.jar
+RUN apt-get update \
+ && apt-get install --yes --no-install-recommends \
+      graphviz \
+      ttf-dejavu \
+ && rm -rf /var/lib/apt/lists/*
 
-FROM openjdk:15-alpine
-
-RUN apk add --no-cache \
-  graphviz \
-  ttf-dejavu
-
-COPY --from=plantuml /plantuml.jar /app/plantuml.jar
+COPY --from=plantuml /app/target/dependency/plantuml-*.jar /app/plantuml.jar
 
 WORKDIR /data
 
