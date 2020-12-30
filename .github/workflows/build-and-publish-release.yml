@@ -22,7 +22,8 @@ jobs:
             | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
 
       - name: Install xmlstarlet
-        run: apt-get install xmlstarlet
+        run: |
+          sudo apt update && sudo apt-get install xmlstarlet --yes
 
       - name: Get PlantUML version
         id: plantuml_version
