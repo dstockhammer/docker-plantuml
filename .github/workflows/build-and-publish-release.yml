@@ -21,7 +21,7 @@ jobs:
         id: plantuml_version
         with:
           xml-file: 'pom.xml'
-          xpath: '//dependency[artifactId = "plantuml"]/version'
+          xpath: '//dependency[artifactId = "plantuml"]/version/text()'
 
       - name: Log in to Docker registry
         run: |
