@@ -4,7 +4,7 @@ COPY pom.xml .
 RUN mvn dependency:copy-dependencies
 
 
-FROM openjdk:11-slim
+FROM openjdk:14-slim
 
 RUN apt-get update \
  && apt-get install --yes --no-install-recommends \
