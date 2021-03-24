@@ -49,7 +49,7 @@ jobs:
       - name: Run test
         run: |
           docker run --rm -v $(pwd)/test:/data plantuml sequence.puml
-          compare test/sequence.png test/expected-sequence.png -compose src test/sequence-diff.png
+          compare -metric AE test/sequence.png test/expected-sequence.png -compose src test/sequence-diff.png
 
       - name: Build version info
         run: |
