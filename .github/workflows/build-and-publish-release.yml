@@ -64,7 +64,7 @@ jobs:
           echo '```' >> release_body.md
 
       - name: Create release
-        uses: actions/create-release@v1
+        uses: actions/create-release@v1.1.4
         if: ${{ github.ref == 'refs/heads/master' && steps.check_version_tag.outputs.exists == 'false' }}
         id: create_release
         env:
