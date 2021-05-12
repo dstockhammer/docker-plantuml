@@ -84,7 +84,7 @@ jobs:
           path: test/*.png
 
       - name: Upload version info as release asset
-        uses: actions/upload-release-asset@v1
+        uses: actions/upload-release-asset@v1.0.2
         if: ${{ github.ref == 'refs/heads/master' && steps.check_version_tag.outputs.exists == 'false' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
