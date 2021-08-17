@@ -1,4 +1,4 @@
-FROM maven:3.8.1-jdk-11-slim as plantuml
+FROM maven:3.8.2-jdk-11-slim as plantuml
 WORKDIR /app
 COPY pom.xml .
 RUN mvn dependency:copy-dependencies
