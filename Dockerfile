@@ -9,7 +9,7 @@ FROM openjdk:11-slim
 RUN apt-get update \
  && apt-get install --yes --no-install-recommends \
       graphviz \
-      ttf-dejavu \
+      fonts-dejavu \
  && rm -rf /var/lib/apt/lists/*
 
 COPY --from=plantuml /app/target/dependency/plantuml-*.jar /app/plantuml.jar
