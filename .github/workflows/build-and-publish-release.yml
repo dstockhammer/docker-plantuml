@@ -29,10 +29,10 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Get PlantUML version
-        run: >
-          mvn help:evaluate -q
-              -Dexpression=project.dependencies[0].version
-              -DforceStdout
+        run: |
+          mvn help:evaluate -q \
+              -Dexpression=project.dependencies[0].version \
+              -DforceStdout \
             | tee -a $GITHUB_ENV
 
       - name: Check if the PlantUML version tag already exists
