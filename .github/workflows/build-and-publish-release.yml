@@ -28,17 +28,13 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Install xmlstarlet
-        run: |
-          sudo apt update && sudo apt-get install xmlstarlet --yes
-
       - name: Get PlantUML version
-        id: get_plantuml_version
         run: |
-          xmlstarlet sel -N x="http://maven.apache.org/POM/4.0.0" -t \
-            -m '//x:dependency[x:artifactId = "plantuml"]/x:version/text()' \
-            -v . pom.xml > version.txt
-          echo "version=$(cat version.txt)" | tee -a $GITHUB_ENV
+          mvn help:evaluate -q \
+              -Dexpression=project.dependencies[0].version \
+              -DforceStdout \
+            | xargs printf "version=%s" \
+            | tee -a $GITHUB_ENV
 
       - name: Check if the PlantUML version tag already exists
         uses: mukunku/tag-exists-action@v1.0.0

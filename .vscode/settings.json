@@ -4,6 +4,7 @@
     "opencontainers",
     "plantuml",
     "puml",
+    "temurin",
     "xmlstarlet"
   ]
 }
