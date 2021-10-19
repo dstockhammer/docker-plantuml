@@ -41,7 +41,7 @@ jobs:
           echo "version=$(cat version.txt)" | tee -a $GITHUB_ENV
 
       - name: Check if the PlantUML version tag already exists
-        uses: mukunku/tag-exists-action@v1
+        uses: mukunku/tag-exists-action@v1.0.0
         id: check_version_tag
         with:
           tag: ${{ env.version }}
