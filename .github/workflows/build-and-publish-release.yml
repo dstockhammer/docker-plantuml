@@ -25,7 +25,7 @@ jobs:
         if: ${{ github.ref == 'refs/heads/master' }}
         uses: docker/login-action@v1
         with:
-          username: ${{ secrets.DOCKER_USERNAME }}
+          username: ${{ github.repository_owner }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Install xmlstarlet
@@ -52,9 +52,8 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: .
-          push: false
+          load: true
           tags: plantuml:latest
-          platforms: linux/amd64,linux/arm64
 
       - name: Run test
         run: |
@@ -111,8 +110,8 @@ jobs:
           context: .
           push: true
           tags: |
-            dstockhammer/plantuml:latest
-            dstockhammer/plantuml:${{ env.version }}
+            ${{ github.repository_owner }}/plantuml:latest
+            ${{ github.repository_owner }}/plantuml:${{ env.version }}
           labels: |
             org.opencontainers.image.version=${{ env.version }}
             org.opencontainers.image.source=${{ github.server_url }}/${{ github.repository }}
