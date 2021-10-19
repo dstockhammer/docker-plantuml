@@ -29,12 +29,11 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Get PlantUML version
-        run: |
-          docker run --rm -v $PWD:/app -w /app maven \
-            mvn help:evaluate -q \
-              -Dexpression=project.dependencies[0].version \
-              -Doutput=version.txt
-          echo "version=$(cat version.txt)" | tee -a $GITHUB_ENV
+        run: >
+          mvn help:evaluate -q
+              -Dexpression=project.dependencies[0].version
+              -DforceStdout
+            | tee -a $GITHUB_ENV
 
       - name: Check if the PlantUML version tag already exists
         uses: mukunku/tag-exists-action@v1.0.0
