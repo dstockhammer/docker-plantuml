@@ -1,10 +1,10 @@
-FROM maven:3.8.3-jdk-11-slim as plantuml
+FROM maven:3.8.3-eclipse-temurin-17 as plantuml
 WORKDIR /app
 COPY pom.xml .
 RUN mvn dependency:copy-dependencies
 
 
-FROM openjdk:17-slim
+FROM eclipse-temurin:11
 
 RUN apt-get update \
  && apt-get install --yes --no-install-recommends \
