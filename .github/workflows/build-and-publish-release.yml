@@ -33,6 +33,7 @@ jobs:
           mvn help:evaluate -q \
               -Dexpression=project.dependencies[0].version \
               -DforceStdout \
+            | xargs printf "version=%s" \
             | tee -a $GITHUB_ENV
 
       - name: Check if the PlantUML version tag already exists
