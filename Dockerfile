@@ -4,7 +4,7 @@ COPY pom.xml .
 RUN mvn dependency:copy-dependencies
 
 
-FROM eclipse-temurin:17
+FROM eclipse-temurin:18
 
 RUN apt-get update \
  && apt-get install --yes --no-install-recommends \
