@@ -37,7 +37,7 @@ jobs:
             | tee -a $GITHUB_ENV
 
       - name: Check if the PlantUML version tag already exists
-        uses: mukunku/tag-exists-action@v1.1.0
+        uses: mukunku/tag-exists-action@v1.2.0
         id: check_version_tag
         with:
           tag: ${{ env.version }}
