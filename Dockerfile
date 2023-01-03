@@ -1,4 +1,4 @@
-FROM maven:3.8.6-eclipse-temurin-17 as plantuml
+FROM maven:3.8.7-eclipse-temurin-17 as plantuml
 WORKDIR /app
 COPY pom.xml .
 RUN mvn dependency:copy-dependencies
