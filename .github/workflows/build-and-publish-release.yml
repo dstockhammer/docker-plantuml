@@ -45,7 +45,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build Docker image
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           context: .
           load: true
@@ -100,7 +100,7 @@ jobs:
           asset_content_type: image/png
 
       - name: Cross-build and push to Docker Hub
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         if: ${{ github.ref == 'refs/heads/main' && steps.check_version_tag.outputs.exists == 'false' }}
         with:
           context: .
