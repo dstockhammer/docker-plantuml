@@ -30,9 +30,7 @@ jobs:
 
       - name: Get PlantUML version
         run: |
-          mvn help:evaluate -q \
-              -Dexpression=project.dependencies[0].version \
-              -DforceStdout \
+          grep -oP '(?<=plantuml/plantuml:)\d+\.\d+\.\d+' Dockerfile \
             | xargs printf "version=%s" \
             | tee -a $GITHUB_ENV
 

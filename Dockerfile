@@ -1,9 +1,4 @@
-FROM maven:3.9.5-eclipse-temurin-21 as plantuml
-WORKDIR /app
-COPY pom.xml .
-RUN mvn dependency:copy-dependencies
-
-
+FROM plantuml/plantuml:1.2024.6 as plantuml
 FROM eclipse-temurin:21
 
 RUN apt-get update \
@@ -12,7 +7,7 @@ RUN apt-get update \
       fonts-dejavu \
  && rm -rf /var/lib/apt/lists/*
 
-COPY --from=plantuml /app/target/dependency/plantuml-*.jar /app/plantuml.jar
+COPY --from=plantuml /opt/plantuml.jar /app/plantuml.jar
 
 WORKDIR /data
 
