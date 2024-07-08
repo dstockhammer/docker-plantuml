@@ -30,7 +30,7 @@ jobs:
 
       - name: Get PlantUML version
         run: |
-          grep -oP '(?<=plantuml/plantuml:)\d+\.\d+\.\d+' Dockerfile
+          grep -oP '(?<=plantuml/plantuml:)\d+\.\d+\.\d+' Dockerfile \
             | xargs printf "version=%s" \
             | tee -a $GITHUB_ENV
 
