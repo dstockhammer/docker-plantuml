@@ -49,10 +49,13 @@ jobs:
           load: true
           tags: plantuml:latest
 
+      - name: Setup ImageMagick
+        uses: mfinelli/setup-imagemagick@v5
+
       - name: Run test
         run: |
           docker run --rm -v $(pwd)/test:/data plantuml sequence.puml
-          compare -metric AE test/sequence.png test/expected-sequence.png -compose src test/sequence-diff.png
+          magick compare -metric AE test/sequence.png test/expected-sequence.png -compose src test/sequence-diff.png
 
       - name: Build version info
         run: |
