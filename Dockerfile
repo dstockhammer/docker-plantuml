@@ -1,4 +1,4 @@
-FROM plantuml/plantuml:1.2025.0 as plantuml
+FROM plantuml/plantuml:1.2025.2 as plantuml
 FROM eclipse-temurin:21
 
 RUN apt-get update \
