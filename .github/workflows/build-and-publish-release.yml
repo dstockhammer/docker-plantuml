@@ -50,7 +50,7 @@ jobs:
           tags: plantuml:latest
 
       - name: Setup ImageMagick
-        uses: mfinelli/setup-imagemagick@v6
+        uses: mfinelli/setup-imagemagick@v7
 
       - name: Run test
         run: |
