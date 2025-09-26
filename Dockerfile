@@ -1,5 +1,5 @@
 FROM plantuml/plantuml:1.2025.4 as plantuml
-FROM eclipse-temurin:21
+FROM eclipse-temurin:25
 
 RUN apt-get update \
  && apt-get install --yes --no-install-recommends \
