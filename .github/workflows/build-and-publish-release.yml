@@ -49,13 +49,15 @@ jobs:
           load: true
           tags: plantuml:latest
 
-      - name: Setup ImageMagick
-        uses: mfinelli/setup-imagemagick@v8
+      - name: Install ImageMagick
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes --no-install-recommends imagemagick
 
       - name: Run test
         run: |
           docker run --rm -v $(pwd)/test:/data plantuml sequence.puml
-          magick compare -metric AE test/sequence.png test/expected-sequence.png -compose src test/sequence-diff.png
+          compare -metric AE -compose src test/sequence.png test/expected-sequence.png test/sequence-diff.png
 
       - name: Build version info
         run: |
